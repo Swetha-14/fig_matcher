@@ -87,6 +87,11 @@ class EmbeddingManager:
     # Calculate cosine similarity between two embeddings
     def calculate_cosine_similarity(self, embedding1: np.ndarray, embedding2: np.ndarray) -> float:
         try:
+            if embedding1.ndim > 1:
+                embedding1 = embedding1.flatten()  
+            if embedding2.ndim > 1:
+                embedding2 = embedding2.flatten()  
+                
             norm1 = embedding1 / np.linalg.norm(embedding1)
             norm2 = embedding2 / np.linalg.norm(embedding2)
             

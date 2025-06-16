@@ -9,23 +9,36 @@ from data_loader import users_data
 
 def get_user_text(user):
     bio_text = user.get('bio', '')
-    conversations_text = " ".join([conv['text'] for conv in user.get('conversations', [])])
-    domain_expertise_text = " ".join(user.get('domain_expertise', []))
-    skill_text = " ".join(user.get('skill_levels', {}).keys())
-    role_text = user.get('current_role', '')
-    experience_text = user.get('experience_level', '')
-    networking_text = user.get('networking_intent', '')
+    
+    domain_expertise_text = " ".join(user.get('domain_expertise', [])) * 5
+    
+    skill_text = ""
+    for skill, level in user.get('skill_levels', {}).items():
+        if level == 'expert':
+            skill_text += f"{skill} expert " * 3
+        elif level == 'intermediate':
+            skill_text += f"{skill} intermediate " * 2
+        else:
+            skill_text += f"{skill} "
+    
+    role_text = user.get('current_role', '').replace('_', ' ') * 2
+    experience_text = user.get('experience_level', '') * 2
+    networking_text = user.get('networking_intent', '').replace('_', ' ') * 2
+    
+    recent_conversations = user.get('conversations', [])[:2]
+    conversations_text = " ".join([conv['text'] for conv in recent_conversations])
+    
     location_text = user.get('location', '')
     last_active_text = f"Last active on {user.get('last_active', '')}" if user.get('last_active') else ""
 
     full_text = " ".join([
         bio_text,
-        conversations_text,
-        domain_expertise_text,
-        skill_text,
-        role_text,
-        experience_text,
-        networking_text,
+        domain_expertise_text,  
+        skill_text,            
+        role_text,             
+        experience_text,       
+        networking_text,       
+        conversations_text,    
         location_text,
         last_active_text
     ])

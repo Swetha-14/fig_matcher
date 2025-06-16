@@ -56,13 +56,58 @@ class CoreMatchingService:
             self.system_status["last_error"] = str(e)
             return False
 
+
+    def _preprocess_query(self, query: str) -> str:
+        cleaned_query = ' '.join(query.strip().split())
+        
+        expansions = {
+            'fintech': 'financial technology payments banking finance',
+            'blockchain': 'cryptocurrency crypto smart contracts DeFi',
+            'ai': 'artificial intelligence machine learning ML',
+            'climate': 'renewable energy sustainability green tech',
+            'healthcare': 'medical health biotech clinical',
+            'marketing': 'growth B2B advertising campaigns',
+            'robotics': 'automation engineering hardware',
+            'venture': 'capital VC investing funding investment',
+            
+            'founder': 'entrepreneur startup cofounder',
+            'developer': 'engineer programmer coding',
+            'researcher': 'scientist PhD academic',
+            'manager': 'executive director leadership',
+            'designer': 'UI UX product design',
+            'analyst': 'data business financial',
+
+            'senior': 'expert experienced professional',
+            'junior': 'entry level beginner graduate',
+            'expert': 'senior experienced specialist',
+            
+            'react': 'javascript frontend web development',
+            'python': 'programming data science ML',
+            'solidity': 'smart contracts blockchain ethereum',
+            
+            'hiring': 'recruit team building positions',
+            'freelance': 'contract consultant available',
+            'cofounder': 'partner founding startup',
+            'funding': 'investment capital seed series',
+            'mentor': 'guidance advice coaching',
+            'collaborate': 'partnership work together'
+        }
+        
+        enhanced_query = cleaned_query.lower()
+        
+        for keyword, expansion in expansions.items():
+            if keyword in enhanced_query:
+                enhanced_query += f" {expansion}"
+        
+        return enhanced_query
+    
     async def search(self, search_request: SearchRequest, users: List[UserProfile]) -> List[Tuple[UserProfile, float]]:
         try:
             if not self.system_status["embedding_model"]:
                 logger.error("Embedding model not ready")
                 return []
             
-            processed_query = ' '.join(search_request.query.strip().split())
+            processed_query = self._preprocess_query(search_request.query)
             
             # Generate embedding for the search query
             query_embedding = await asyncio.get_event_loop().run_in_executor(
