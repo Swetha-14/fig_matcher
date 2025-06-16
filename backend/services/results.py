@@ -103,6 +103,7 @@ class ResultsService:
                     "networking_intent": user.networking_intent.value,
                     "activity_status": user.get_activity_status().value,
                     "conversation_count": len(user.conversations),
+                    "conversations": [{"text": conv.text, "timestamp": conv.timestamp} for conv in user.conversations],
                     "explanation": top_explanation if rank == 1 else None
                 }
                 results.append(result)

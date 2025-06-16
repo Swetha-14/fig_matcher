@@ -210,6 +210,7 @@ async def get_users():
                 "networking_intent": user.networking_intent.value,
                 "activity_status": user.get_activity_status().value,
                 "conversation_count": len(user.conversations),
+                "conversations": [{"text": conv.text, "timestamp": conv.timestamp} for conv in user.conversations],
                 "remote_preference": user.remote_preference
             }
             users_data.append(user_dict)
