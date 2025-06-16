@@ -16,12 +16,17 @@ An intelligent people matching platform that uses SBERT embeddings and FAISS for
 
 ## Quick Start
 
+
 ### Backend
 ```bash
-cd backend
-pip install -r requirements.txt
-python setup.py  # Generate embeddings
-python main.py   # Start FastAPI server
+# Create virtual environment in project root
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies and start server
+pip install -r backend/requirements.txt
+python backend/setup.py  # Generate embeddings
+python backend/main.py   # Start FastAPI server
 
 ### Frontend
 ```bash
