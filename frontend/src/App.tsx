@@ -495,7 +495,7 @@ const CleanFigboxMatcher: React.FC = () => {
           </div>
         )}
 
-        {results.length === 0 && !topMatch && query && !loading && !errorMessage && (
+        {results.length === 0 && !topMatch && !loading && !errorMessage && searchTime > 0 && (
           <div className="no-results">
             <Search size={48} />
             <h3>No matches found</h3>

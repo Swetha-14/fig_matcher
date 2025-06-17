@@ -119,10 +119,13 @@ class CoreMatchingService:
             else:
                 scored_users = await self._brute_force_search(query_embedding, users)
             
+            filtered_users = [
+            (user, score) for user, score in scored_users 
+            if score >= search_request.min_similarity_threshold
+        ]
+            filtered_users.sort(key=lambda x: x[1], reverse=True)
             
-            scored_users.sort(key=lambda x: x[1], reverse=True)
-            
-            return scored_users
+            return filtered_users
             
         except Exception as e:
             logger.error(f" Search failed: {str(e)}")
