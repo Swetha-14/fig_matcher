@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Users, ArrowRight, User, MessageCircle, MapPin, Clock, X, ChevronRight, Activity, Star, Zap, Lightbulb } from 'lucide-react';
 import './App.css';
+import { API_CONFIG } from './config';
 
 interface User {
   id: number;
@@ -66,7 +67,8 @@ const CleanFigboxMatcher: React.FC = () => {
 
   const fetchAllUsers = async (): Promise<void> => {
     try {
-      const response = await fetch('http://localhost:8000/users');
+
+      const response = await fetch(`${API_CONFIG.BASE_URL}/users`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -88,7 +90,7 @@ const CleanFigboxMatcher: React.FC = () => {
     setErrorMessage('');
 
     try {
-      const response = await fetch('http://localhost:8000/search', {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/search`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
